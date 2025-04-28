@@ -8,19 +8,21 @@ import { EventEmitter } from './EventEmitter';
  */
 export const obj = {
     count: 0,
-    subscribe() {},
-    unsubscribe() {},
+    subscribe: function () {
+        this.clickHandler = () => {
+            this.count++;
+        };
+        EventEmitter.on('click', this.clickHandler);
+    },
+    unsubscribe: function () {
+        EventEmitter.off('click', this.clickHandler);
+    },
 };
 
-/*
-Сделайте так, чтобы метод first вызывал метод second со своими аргументами, но в обратном порядке:
-
-obj1.first(1, 2, 3);
-// Внутренний вызов должен быть равносилен obj1.second(3, 2, 1)
- */
 export const obj1 = {
-    first(...args) {},
-    second() {
-        // здесь ничего писать не нужно
+    first: function () {
+        const args = Array.from(arguments).reverse();
+        return this.second.apply(this, args);
     },
+    second: function () {},
 };
